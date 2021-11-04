@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="timestamp-funcionalidades">
+
+    <title id="funcionalidades">Funcionalidades</title>
+
+    <section id="ts-cades">
+        <title>Carimbo de tempo com componente <emphasis>policy-impl-cades</emphasis></title>
+
+	<sectioninfo>
+            A forma mais prática e comum de uso é a obtenção do carimbo durante o processo de geração de assinatura.
+            O Demoiselle Signer provê o componente chamado policy-impl-cades que faz a geração da assinatura no padrão CAdES.
+            Portanto, para requisitar o carimbo, basta utilizar a política para <ulink url="http://www.iti.gov.br/icp-brasil/autoridades-certificadoras-do-tempo/85-artefatos-de-assinatura-digital/139-assinatura-digital-com-referencia-de-tempo-ad-rt">Assinatura digital com Referência de Tempo (AD-RT)</ulink>
+            É possível inclusive definir um certificado diferente para a requisição do Carimbo.  
+	</sectioninfo>
+	<para>O código abaixo demostra como pode ser feita a chamada:</para>
+        
+
+        <programlisting role="JAVA"><![CDATA[
+			PKCS7Signer signer = PKCS7Factory.getInstance().factoryDefault();
+			
+			Certificate[] certificateToTimeStamp = // Certificado que irá requisitar o carimbo
+			signer.setCertificatesForTimeStamp(certificateToTimeStamp);
+			PrivateKey privateKeyToTimeStamp = // Chave privada que irá requisitar o carimbo
+			signer.setPrivateKeyForTimeStamp(privateKeyToTimeStamp);
+			Certificate[] certificateToSign = // Certificado que irá gerar a Assinatura
+			PrivateKey privateKeyToSign = // Chave privada que irá gerar a Assinatura
+			signer.setCertificates(certificateToSign);
+		    signer.setPrivateKey(privateKeyToSign);
+			// usando a politica com carimbo de tempo
+			signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_2_2);
+			// Assinatura desatachada
+			byte[] signature = signer.doDetachedSign(fileToSign);
+]]></programlisting>
+</section>
+
+<section id="ts-pades">
+        <title>Carimbo de tempo com componente <emphasis>policy-impl-pades</emphasis></title>
+
+	<sectioninfo>
+            Assim como o Demoiselle Signer provê o componente chamado policy-impl-cades que faz a geração da assinatura no padrão CAdES. 
+            Há o equivalente para PAdES.
+	</sectioninfo>
+	<para>O código abaixo demostra como pode ser feita a chamada neste caso, lembrando que o componente não anexa a assinatura no documento PDF:</para>
+        
+        <programlisting role="JAVA"><![CDATA[
+            PAdESSigner signerPades = new PAdESSigner();
+            Certificate[] certificateToTimeStamp = // Certificado que irá requisitar o carimbo
+			signerPades.setCertificatesForTimeStamp(certificateToTimeStamp);
+			PrivateKey privateKeyToTimeStamp = // Chave privada que irá requisitar o carimbo
+			signerPades.setPrivateKeyForTimeStamp(privateKeyToTimeStamp);
+			Certificate[] certificateToSign = // Certificado que irá gerar a Assinatura
+			PrivateKey privateKeyToSign = // Chave privada que irá gerar a Assinatura
+			signerPades.setCertificates(certificateToSign);
+		    signerPades.setPrivateKey(privateKeyToSign);
+			// usando a politica com carimbo de tempo
+			signerPades.setSignaturePolicy(PolicyFactory.Policies.AD_RT_PADES_1_1);
+			// Assinatura desatachada
+			byte[] signature = signerPades.doDetachedSign(fileToSign);
+]]></programlisting>
+</section>
+
+    <section>
+        <title>Requisições de carimbo de tempo</title>
+		<sectioninfo>
+			O componente provê tambem outras forma de obter o carimbo de tempo.			
+		</sectioninfo>
+		<section>
+		<title>Para uma assinatura padrão CAdES</title>
+		<sectioninfo>Casos onde já existe um arquivo de assinatura no padrão CADeS</sectioninfo>
+		<para>Para obter um carimbo de tempo para uma assinatura CADeS, basta enviar o conteúdo da assinatura.
+		O retorno será a assinatura com o carimbo embutido, veja no exemplo abaixo:</para>
+		<programlisting role="JAVA"><![CDATA[
+			byte[] signatureFile = // array de bytes do conteúdo a ser assinado e carimbado
+			CAdESTimeStampSigner varCAdESTimeStampSigner = new CAdESTimeStampSigner();
+			varCAdESTimeStampSigner.setCertificates(CertificateChain);
+			varCAdESTimeStampSigner.setPrivateKey(PrivateKey);
+			byte[] signatureWithTimeStamp = varCAdESTimeStampSigner
+					.doTimeStampForSignature(signatureFile);			
+]]></programlisting>
+		</section>
+		<section>
+		<title>Para um conteúdo</title>
+		<sectioninfo>Gera o carimbo para o contéudo de uma informação</sectioninfo>
+		<para>É possível também obter o carimbo para o conteúdo de uma informação. Neste caso o carimbo não estará associado à assinatura</para>
+		<note>A ICP-Brasil não traz nenhuma norma relativa a este tipo de carimbo, o que existe são as política para assinatura.</note>
+		<para>O código abaixo demosntra como é feita a requisição.
+		O retorno é o arquivo do tipo TimeStampToken descrito na <ulink url="https://www.ietf.org/rfc/rfc3161.txt">RFC 3161</ulink> </para>
+		<programlisting role="JAVA"><![CDATA[
+			byte[] content = // array de bytes do conteúdo
+			CAdESTimeStampSigner varCAdESTimeStampSigner = new CAdESTimeStampSigner();
+			varCAdESTimeStampSigner.setCertificates(CertificateChain);
+			varCAdESTimeStampSigner.setPrivateKey(PrivateKey);
+			byte[] timeStampForContent = varCAdESTimeStampSigner.doTimeStampForContent(content);
+]]></programlisting>
+		</section>		
+		<section>
+		<title>Para o resumo (hash) de um conteúdo</title>
+		<sectioninfo>O carimbo pode ser gerado enviando o resumo já calculado do conteúdo, evitando o envio de muitos dados</sectioninfo>
+		<para>A outra funcionalidade disponível permite enviar o resumo já calculado.</para>
+		<programlisting role="JAVA"><![CDATA[
+		byte[] hash = // array de bytes do hash
+		CAdESTimeStampSigner varCAdESTimeStampSigner = new CAdESTimeStampSigner();
+		varCAdESTimeStampSigner.setCertificates(CertificateChain);
+		varCAdESTimeStampSigner.setPrivateKey(PrivateKey);
+		byte[] timeStampForContent = varCAdESTimeStampSigner.doTimeStampFromHashContent(hash);
+			
+]]></programlisting>
+		</section>
+	</section>
+	<section>
+        <title>Validdação do Carimbo de tempo com componente <emphasis>policy-impl-cades e  policy-impl-pades</emphasis></title>
+
+	<sectioninfo>
+            Assim como na geração os componetes policy-impl-cades e policy-impl-pades já estão preparados para fazer a validação da assinatura que contenha um carimbo de tempo.
+            O processo é o mesmo de validar qualquer outra assinatura CAdES o PAdES. 
+	</sectioninfo>
+	<para>Veja a sessão de <link linkend="policy-impl-cades-funcionalidades-validar">Validação</link></para>
+	        
+</section>
+    <section>
+        <title>Validações de carimbo de tempo</title>
+		<sectioninfo>
+			Usando o componente para validar a assinatura com carimbo			
+		</sectioninfo>
+		<section>
+		<title>Para uma assinatura padrão CAdES</title>
+		<sectioninfo>Para validar um carimbo de tempo, ou mais, embutido em uma assinatura CAdES, basta enviar o conteúdo da assinatura.</sectioninfo>
+				<programlisting role="JAVA"><![CDATA[
+			byte[] signatureFile = // array de bytes da Assinatura
+			PAdESTimeStampSigner varPAdESTimeStampSigner = new PAdESTimeStampSigner();
+			List<Timestamp> listTimeStamp = varPAdESTimeStampSigner.checkTimeStampOnSignature(signatureFile);
+			if (!listTimeStamp.isEmpty()){
+				for (Timestamp ts : listTimeStamp){
+					System.out.println(ts.toString());
+				}
+			}			
+]]></programlisting>
+		</section>
+		<section>
+		<title>Para uma assinatura padrão PAdES</title>
+		<sectioninfo>Para validar um carimbo de tempo, ou mais, embutido em uma assinatura PAdES, basta enviar o conteúdo da assinatura.</sectioninfo>
+				<programlisting role="JAVA"><![CDATA[
+			byte[] signatureFile = // array de bytes da Assinatura
+			CAdESTimeStampSigner varCAdESTimeStampSigner = new CAdESTimeStampSigner();
+			List<Timestamp> listTimeStamp = varCAdESTimeStampSigner.checkTimeStampOnSignature(signatureFile);
+			if (!listTimeStamp.isEmpty()){
+				for (Timestamp ts : listTimeStamp){
+					System.out.println(ts.toString());
+				}
+			}			
+]]></programlisting>
+		</section>
+		<section>
+		<title>Para um conteúdo</title>
+		<sectioninfo>Validar o carimbo para o contéudo de uma informação</sectioninfo>
+		<para>Para validar o carimbo associado a um contéudo, é preciso enviar ao componente, o contéudo e a assinatura, conforme o código abaixo:</para>
+		
+		<programlisting role="JAVA"><![CDATA[
+			byte[] timeStampFile = // array de bytes da Assinatura
+			byte[] content = // array de bytes do conteúdo assinado
+			CAdESTimeStampSigner varCAdESTimeStampSigner = new CAdESTimeStampSigner();
+			Timestamp varTimeStamp = varCAdESTimeStampSigner.checkTimeStampWithContent(timeStampFile, content);
+]]></programlisting>
+		</section>		
+		<section>
+		<title>Para o resumo (hash) de um conteúdo</title>
+		<sectioninfo>Da mesma forma como na obtenção do carimbo, a validação  pode ser feita enviando o resumo já calculado do conteúdo</sectioninfo>
+		<programlisting role="JAVA"><![CDATA[
+		byte[] timeStampFile = // array de bytes da Assinatura
+		byte[] hash = // array de bytes do hash do conteúdo
+		CAdESTimeStampSigner varCAdESTimeStampSigner = new CAdESTimeStampSigner();
+		Timestamp varTimeStamp = varCAdESTimeStampSigner.checkTimeStampWithHash(timeStampFile, hash);			
+]]></programlisting>
+		</section>
+		<section>
+		<title>Definir timeout e tentativas de conexão</title>
+		<sectioninfo>Na versão atual é possível definir um tempo limite para conexão da requisição do carimbo do tempo e também a quantidade 
+		de tentativas antes de gerar uma exeção</sectioninfo>
+		<programlisting role="JAVA"><![CDATA[
+			TimeStampConfig tsConfig = TimeStampConfig.getInstance();
+			tsConfig.setTimeOut(3000); // valor em milisegundos
+			tsConfig.setConnectReplay(3);			
+]]></programlisting>
+		</section>
+	</section>
+</chapter>

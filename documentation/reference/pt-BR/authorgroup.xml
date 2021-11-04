@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE authorgroup PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<authorgroup>
+	<author>
+		<firstname>Denis A. Altoé</firstname>
+		<surname>Falqueto</surname>		
+	</author>
+	<author>
+		<firstname>Ednara</firstname>
+		<surname>Oliveira</surname>
+	</author>
+	<author>
+		<firstname>Emerson</firstname>
+		<surname>Sachio Saito</surname>
+		<email>emerson.saito@gmail.com</email>
+	</author>
+	<author>
+		<firstname>Erick Luiz Flores</firstname>
+		<surname>Guimarães</surname>
+	</author>	
+	<author>
+		<firstname>Fabiano</firstname>
+		<surname>Kuss</surname>
+	</author>
+		<author>
+		<firstname>Humberto</firstname>
+		<surname>Pacheco</surname>
+	</author>
+	<author>
+		<firstname>José Rene</firstname>
+		<surname>Campanario</surname>
+	</author>
+	<author>
+		<firstname>Julian</firstname>
+		<surname>Santos</surname>
+	</author>
+	<author>
+		<firstname>Thiago</firstname>
+		<surname>Laubstein Ribeiro</surname>
+	</author>	   	
+</authorgroup>

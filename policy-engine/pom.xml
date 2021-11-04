@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>policy-engine</artifactId>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>org.demoiselle.signer</groupId>
+        <artifactId>parent</artifactId>
+        <version>10.0.0-SNAPSHOT</version>
+        <relativePath>../parent</relativePath>
+    </parent>
+
+    <name>Demoiselle Signer Policy Engine</name>
+    <description>Demoiselle Signer Component to provides a engine for ICP-BRASIL signature policies.</description>
+    <url>https://www.frameworkdemoiselle.gov.br</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.demoiselle.signer</groupId>
+            <artifactId>signer-core</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

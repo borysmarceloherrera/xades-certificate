@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<part id="timestamp-master">
+
+	<title>TimeStamp - Carimbo de tempo</title>
+
+	<partintro>
+		<para>
+			O <emphasis>signer-timestamp</emphasis> é o componente que provê as funcionalidades para obtenção de carimbos de tempo de  uma  <ulink url="https://en.wikipedia.org/wiki/Trusted_timestamping">Autoridade de Carimbo de Tempo</ulink> 
+			credenciada à ICP-BRASIL .
+		</para>
+		<para><itemizedlist>
+		<listitem><ulink url="http://www.iti.gov.br/icp-brasil/57-icp-brasil/134-autoridades-certificadoras-do-tempo">Lista das autoridades credenciadas</ulink>.</listitem>
+		</itemizedlist>
+		</para>
+
+		<para>
+			A autoridade padrão do componente é a <ulink url="https://act.serpro.gov.br/">Autoridade de Carimbo do SERPRO.</ulink> 
+		</para>
+		<para><important><para>Para emissão de um carimbo de tempo é preciso que o assinante possua um certificado ICP-BRASIL e este certificado esteja cadastrado
+		na Autoridade de Carimbo de tempo. O custo de emissão depende de cada Autoridade</para></important></para>
+	</partintro>
+
+	<!-- capítulos -->
+	<xi:include href="configuracao.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+	<xi:include href="funcionalidades.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+</part>

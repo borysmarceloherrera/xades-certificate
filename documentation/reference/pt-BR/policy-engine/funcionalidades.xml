@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding="utf-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<chapter id="policy-engine-funcionalidades">
+
+    <title id="funcionalidades">Funcionalidades</title>
+
+    <section>
+        <title>Fabricar políticas</title>
+
+        <para>
+            Além de algumas funcionalidade intrinsecas ao uso na validação e geração das assinaturas, a principal funcionalidade do Policy-Engine é 
+            fabricar as políticas de assinatura. Atualmente há um série de <ulink url="http://iti.gov.br/repositorio/84-repositorio/133-artefatos-de-assinatura-digital">políticas</ulink> em vigência na ICP-BRASIL
+            e o componente está preparado para cria a maioria delas, a exceção até a versão 3.1.x do Signer são as políticas para o padrão XAdES (XML).
+             
+        </para>
+        <para>Atualmennte temos as seguintes:</para>
+        <itemizedlist>
+        		<listitem> <para> <ulink url="http://politicas.icpbrasil.gov.br/PA_AD_RB_v2_2.der">AD_RB_CADES_2_2</ulink> </para>   
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_AD_RT_v2_2.der">AD_RT_CADES_2_2</ulink> </para>	 
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_AD_RV_v2_2.der">AD_RV_CADES_2_2</ulink> </para>	 
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_AD_RC_v2_2.der">AD_RC_CADES_2_2</ulink> </para>	 
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_AD_RA_v2_3.der">AD_RA_CADES_2_3</ulink> </para>	 
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_PAdES_AD_RB_v1_0.der">AD_RB_PADES_1_0</ulink> </para>	 
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_PAdES_AD_RT_v1_0.der">AD_RT_PADES_1_0</ulink> </para>  
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_PAdES_AD_RC_v1_1.der">AD_RC_PADES_2_3</ulink> </para>  
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_PAdES_AD_RA_v1_1.der">AD_RA_PADES_1_1</ulink> </para>  
+        		</listitem>        
+        	</itemizedlist>
+	<para>Das políticas acimas o componente atualmente está preparado para gerar assinaturas nos padrões:</para>
+
+<itemizedlist>
+        		<listitem> <para> <ulink url="http://politicas.icpbrasil.gov.br/PA_AD_RB_v2_2.der">AD_RB_CADES_2_2</ulink> </para>   
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_AD_RT_v2_2.der">AD_RT_CADES_2_2</ulink> </para>	 
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_PAdES_AD_RB_v1_0.der">AD_RB_PADES_1_0</ulink> </para>	 
+        		</listitem>
+        		<listitem><para> <ulink url="http://politicas.icpbrasil.gov.br/PA_PAdES_AD_RT_v1_0.der">AD_RT_PADES_1_0</ulink> </para>  
+        		</listitem>        		       
+        	</itemizedlist>
+        	
+        	<para>O componente disponível que faz uso é o policy-impl-cades, conforme o exemplo abaixo: </para>
+        	
+        <programlisting role="JAVA"><![CDATA[
+// Para usar a politica de Referência Básica:
+signer.setSignaturePolicy(PolicyFactory.Policies.AD_RB_CADES_2_2);
+
+// Para usar a política com Referência de Tempo
+signer.setSignaturePolicy(PolicyFactory.Policies.AD_RT_CADES_2_2);
+]]></programlisting>
+
+    </section>
+
+</chapter>
